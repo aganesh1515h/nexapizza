@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexaPizza | Quantum Truffle Fusion</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ff4d4d;
+            --primary-dark: #e63946;
+            --secondary: #00bbf9;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --accent: #fca311;
+            --success: #2ecc71;
+            --gradient: linear-gradient(135deg, #ff4d4d 0%, #fca311 100%);
+            --neon-glow: 0 0 10px rgba(255, 77, 77, 0.7), 0 0 20px rgba(255, 77, 77, 0.5);
+            --font-main: 'Space Grotesk', sans-serif;
+            --font-heading: 'Orbitron', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(26, 26, 46, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        header.scrolled {
+            padding: 1rem 5%;
+            background: rgba(26, 26, 46, 0.98);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: var(--primary);
+            text-shadow: var(--neon-glow);
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            position: relative;
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .cart-icon, .user-icon {
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cart-icon:hover, .user-icon:hover {
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            color: var(--light);
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        /* Product Hero Section */
+        .product-hero {
+            min-height: 100vh;
+            padding: 10rem 5% 5rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(rgba(26, 26, 46, 0.8), rgba(26, 26, 46, 0.8)), 
+                        url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop') no-repeat center center/cover;
+        }
+
+        .product-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 30%, rgba(255, 77, 77, 0.2) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .product-container {
+            display: flex;
+            gap: 5rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .product-gallery {
+            flex: 1;
+            perspective: 2000px;
+        }
+
+        .main-product-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease, box-shadow 0.5s ease;
+            cursor: grab;
+        }
+
+        .main-product-image:hover {
+            transform: rotateY(10deg) rotateX(5deg) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 10px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            border-color: var(--primary);
+        }
+
+        .thumbnail.active {
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+
+        .product-details {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .product-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .product-title {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            background: linear-gradient(to right, var(--light) 50%, var(--primary) 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transition: background-position 1s ease;
+        }
+
+        .product-title:hover {
+            background-position: left bottom;
+        }
+
+        .product-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 1.5rem;
+        }
+
+        .product-description {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stars {
+            color: var(--accent);
+        }
+
+        .review-count {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .customization-options {
+            margin-bottom: 2rem;
+        }
+
+        .option-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .option-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .option-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 77, 77, 0.2);
+            border-color: var(--primary);
+        }
+
+        .option-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-btn:hover {
+            background: rgba(255, 77, 77, 0.2);
+        }
+
+        .quantity-input {
+            width: 60px;
+            text-align: center;
+            background: transparent;
+            border: none;
+            color: var(--light);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .add-to-cart-btn {
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(252, 163, 17, 0.3);
+        }
+
+        .add-to-cart-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(252, 163, 17, 0.4);
+        }
+
+        .wishlist-btn {
+            background: transparent;
+            color: var(--light);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .wishlist-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .product-meta {
+            margin-top: 2rem;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .meta-icon {
+            color: var(--primary);
+        }
+
+        /* Ingredients Section */
+        .ingredients-section {
+            padding: 6rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredients-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAyKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            opacity: 0.3;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 5rem;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--gradient);
+            border-radius: 3px;
+        }
+
+        .ingredients-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ingredient-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, var(--primary) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .ingredient-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .ingredient-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .ingredient-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .ingredient-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .ingredient-desc {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* Recommended Section */
+        .recommended-section {
+            padding: 6rem 5%;
+            background: linear-gradient(to bottom, var(--dark) 0%, #1a1a3e 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recommended-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzPjxwYXR0ZXJuIGlkPSJwYXR0ZXJuIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHBhdHRlcm5Vbml0cz0idXNlclNwYWNlT25Vc2UiIHBhdHRlcm5UcmFuc2Zvcm09InJvdGF0ZSg0NSkiPjxyZWN0IHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNwYXR0ZXJuKSIvPjwvc3ZnPg==');
+            opacity: 0.3;
+        }
+
+        .recommended-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 2rem;
+            padding: 2rem 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .recommended-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .recommended-card {
+            min-width: 300px;
+            scroll-snap-align: start;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .recommended-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .recommended-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            transition: transform 0.5s ease;
+        }
+
+        .recommended-card:hover .recommended-image {
+            transform: scale(1.05);
+        }
+
+        .recommended-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .recommended-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .recommended-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .recommended-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(252, 163, 17, 0.3);
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .slider-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .slider-dot.active {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        /* Reviews Section */
+        .reviews-section {
+            padding: 6rem 5%;
+            background: rgba(255, 255, 255, 0.02);
+            position: relative;
+        }
+
+        .reviews-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .review-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 77, 77, 0.3);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .review-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-right: 1.5rem;
+        }
+
+        .review-author {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .review-date {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .review-rating {
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .review-content {
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .review-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .rating-input {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-star {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-star:hover, .rating-star.active {
+            color: var(--accent);
+            transform: scale(1.2);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            color: var(--light);
+            font-family: var(--font-main);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(255, 77, 77, 0.3);
+        }
+
+        .form-textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .submit-btn {
+            padding: 1rem 2rem;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(252, 163, 17, 0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: #0f0f1e;
+            padding: 5rem 5% 2rem;
+            position: relative;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--light);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-logo span {
+            color: var(--primary);
+        }
+
+        .footer-about {
+            max-width: 300px;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-links h3, .footer-contact h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-links h3::after, .footer-contact h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--primary);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .footer-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary);
+        }
+
+        .footer-links a:hover::after {
+            width: 100%;
+        }
+
+        .footer-contact p {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .footer-contact i {
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1024px) {
+            .product-container {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .product-gallery, .product-details {
+                width: 100%;
+                max-width: 100%;
+            }
+            
+            .main-product-image {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                height: 100vh;
+                background: rgba(26, 26, 46, 0.98);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                transition: all 0.5s ease;
+                z-index: 1000;
+            }
+            
+            .nav-links.active {
+                right: 0;
+            }
+            
+            .menu-toggle {
+                display: block;
+            }
+            
+            .product-title {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-title {
+                font-size: 2rem;
+            }
+            
+            .product-price {
+                font-size: 1.5rem;
+            }
+            
+            .original-price {
+                font-size: 1.2rem;
+            }
+            
+            .option-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .thumbnail-container {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <a href="#" class="logo">
+            <i class="fas fa-pizza-slice logo-icon"></i>
+            Nexa<span>Pizza</span>
+        </a>
+        
+        <div class="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </div>
+        
+        <nav class="nav-links">
+            <a href="index2.html">Home</a>
+            <a href="product2.html">Shop</a>
+            <a href="#">Features</a>
+            <a href="#">Reviews</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+        
+        <div class="header-actions">
+            <div class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count">3</span>
+            </div>
+            <div class="user-icon">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Product Hero Section -->
+    <section class="product-hero" id="product">
+        <div class="product-container">
+            <div class="product-gallery">
+                <img src="pizz4.jpg?q=80&w=1981&auto=format&fit=crop" alt="Truffle Fusion Pizza" class="main-product-image">
+                <div class="thumbnail-container">
+                    <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?q=80&w=1981&auto=format&fit=crop" alt="Pizza Thumbnail 1" class="thumbnail active">
+                    <img src="https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop" alt="Pizza Thumbnail 2" class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1552539618-7eec9b4d1796?q=80&w=2069&auto=format&fit=crop" alt="Pizza Thumbnail 3" class="thumbnail">
+                    <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=1888&auto=format&fit=crop" alt="Pizza Thumbnail 4" class="thumbnail">
+                </div>
+            </div>
+            
+            <div class="product-details">
+                <span class="product-badge">Bestseller</span>
+                <h1 class="product-title">Nebula Naga</h1>
+                <div class="product-price">
+                    <span>₹300</span>
+                    <span class="original-price">₹350</span>
+                </div>
+                <div class="product-rating">
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <span class="review-count">(428 reviews)</span>
+                </div>
+                <p class="product-description">
+                    Our signature Quantum Truffle Fusion pizza features a black truffle-infused crust, wild forest mushrooms, quantum-aged cheese blend, and edible 24k gold flakes. Each bite delivers a multidimensional flavor experience that evolves as you eat.
+                </p>
+                
+                <div class="customization-options">
+                    <h3 class="option-title">Crust Type</h3>
+                    <div class="option-buttons">
+                        <button class="option-btn active">Quantum Thin</button>
+                        <button class="option-btn">Neo-Neapolitan</button>
+                        <button class="option-btn">Gluten-Free</button>
+                    </div>
+                </div>
+                
+                <div class="customization-options">
+                    <h3 class="option-title">Size</h3>
+                    <div class="option-buttons">
+                        <button class="option-btn">Personal (10")</button>
+                        <button class="option-btn active">Medium (12")</button>
+                        <button class="option-btn">Large (14")</button>
+                        <button class="option-btn">XL (16")</button>
+                    </div>
+                </div>
+                
+                <div class="quantity-selector">
+                    <button class="quantity-btn">-</button>
+                    <input type="number" value="1" min="1" max="10" class="quantity-input">
+                    <button class="quantity-btn">+</button>
+                </div>
+                
+                <button class="add-to-cart-btn">
+                    <i class="fas fa-shopping-cart"></i> Add to Cart
+                </button>
+                
+                <button class="wishlist-btn">
+                    <i class="fas fa-heart"></i> Add to Wishlist
+                </button>
+                
+                <div class="product-meta">
+                    <div class="meta-item">
+                        <i class="fas fa-bolt meta-icon"></i>
+                        <span>Ready in 15min</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-leaf meta-icon"></i>
+                        <span>Lab-Grown Ingredients</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fas fa-fire-alt meta-icon"></i>
+                        <span>850 Kcal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Ingredients Section -->
+    <section class="ingredients-section">
+        <h2 class="section-title fade-in">Molecular Ingredients</h2>
+        
+        <div class="ingredients-grid">
+            <div class="ingredient-card fade-in delay-1">
+                <i class="fas fa-atom ingredient-icon"></i>
+                <h3 class="ingredient-name">Quantum-Aged Cheese</h3>
+                <p class="ingredient-desc">
+                    Our proprietary cheese blend is aged in a quantum fluctuation chamber, enhancing flavor molecules for unparalleled taste.
+                </p>
+            </div>
+            
+            <div class="ingredient-card fade-in delay-2">
+                <i class="fas fa-meteor ingredient-icon"></i>
+                <h3 class="ingredient-name">Black Truffle Infusion</h3>
+                <p class="ingredient-desc">
+                    Ultra-concentrated truffle essence extracted using sonic vibration for maximum flavor penetration in every bite.
+                </p>
+            </div>
+            
+            <div class="ingredient-card fade-in delay-3">
+                <i class="fas fa-seedling ingredient-icon"></i>
+                <h3 class="ingredient-name">CRISPR Mushrooms</h3>
+                <p class="ingredient-desc">
+                    Genetically optimized mushrooms with enhanced umami profiles and perfect texture consistency.
+                </p>
+            </div>
+            
+            <div class="ingredient-card fade-in delay-4">
+                <i class="fas fa-gem ingredient-icon"></i>
+                <h3 class="ingredient-name">Edible Gold Flakes</h3>
+                <p class="ingredient-desc">
+                    24k gold nano-flakes that enhance conductivity between taste buds for heightened flavor perception.
+                </p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Recommended Section -->
+    <section class="recommended-section">
+        <h2 class="section-title fade-in">AI-Recommended Pairings</h2>
+        
+        <div class="recommended-slider fade-in delay-1">
+            <div class="recommended-card">
+                <img src="https://images.unsplash.com/photo-1571066811602-716837d681de?q=80&w=1844&auto=format&fit=crop" alt="Neo Vegan Pizza" class="recommended-image">
+                <h3 class="recommended-title">Neo Vegan</h3>
+                <div class="recommended-price">$22.99</div>
+                <button class="recommended-btn">Add to Order</button>
+            </div>
+            
+            <div class="recommended-card">
+                <img src="https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?q=80&w=1888&auto=format&fit=crop" alt="Inferno Core Pizza" class="recommended-image">
+                <h3 class="recommended-title">Inferno Core</h3>
+                <div class="recommended-price">$26.99</div>
+                <button class="recommended-btn">Add to Order</button>
+            </div>
+            
+            <div class="recommended-card">
+                <img src="https://images.unsplash.com/photo-1595854341625-f33ee10dbf94?q=80&w=2070&auto=format&fit=crop" alt="Holographic Hawaiian" class="recommended-image">
+                <h3 class="recommended-title">Holographic Hawaiian</h3>
+                <div class="recommended-price">$23.99</div>
+                <button class="recommended-btn">Add to Order</button>
+            </div>
+            
+            <div class="recommended-card">
+                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=1917&auto=format&fit=crop" alt="Chocolate Singularity" class="recommended-image">
+                <h3 class="recommended-title">Chocolate Singularity</h3>
+                <div class="recommended-price">$21.99</div>
+                <button class="recommended-btn">Add to Order</button>
+            </div>
+        </div>
+        
+        <div class="slider-controls fade-in delay-2">
+            <div class="slider-dot active"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+            <div class="slider-dot"></div>
+        </div>
+    </section>
+    
+    <!-- Reviews Section -->
+    <section class="reviews-section">
+        <div class="reviews-container">
+            <h2 class="section-title fade-in">Quantum Taste Testimonials</h2>
+            
+            <div class="review-card fade-in delay-1">
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah J." class="review-avatar">
+                    <div>
+                        <h3 class="review-author">Sarah J.</h3>
+                        <div class="review-date">2 days ago</div>
+                    </div>
+                </div>
+                <div class="review-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <p class="review-content">
+                    The Truffle Fusion pizza literally melted in my mouth while simultaneously exploding with flavor. It's like my taste buds went to the future and came back with souvenirs. The quantum-aged cheese is something you have to experience to believe.
+                </p>
+            </div>
+            
+            <div class="review-card fade-in delay-2">
+                <div class="review-header">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mike T." class="review-avatar">
+                    <div>
+                        <h3 class="review-author">Mike T.</h3>
+                        <div class="review-date">1 week ago</div>
+                    </div>
+                </div>
+                <div class="review-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <p class="review-content">
+                    I've eaten pizza on 4 continents, but nothing compares to this. The edible gold flakes actually made me taste the other ingredients more intensely - like some kind of flavor amplifier. The drone delivery arrived before I finished ordering. How?!
+                </p>
+            </div>
+            
+            <div class="review-form fade-in delay-3">
+                <h3 class="form-title">Share Your Quantum Experience</h3>
+                <div class="rating-input">
+                    <i class="fas fa-star rating-star"></i>
+                    <i class="fas fa-star rating-star"></i>
+                    <i class="fas fa-star rating-star"></i>
+                    <i class="fas fa-star rating-star"></i>
+                    <i class="fas fa-star rating-star"></i>
+                </div>
+                <input type="text" class="form-input" placeholder="Your Name">
+                <input type="email" class="form-input" placeholder="Your Email">
+                <textarea class="form-input form-textarea" placeholder="Your Review"></textarea>
+                <button class="submit-btn">Submit Review</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content fade-in">
+            <div class="footer-about">
+                <a href="#" class="footer-logo">
+                    <i class="fas fa-pizza-slice"></i>
+                    Nexa<span>Pizza</span>
+                </a>
+                <p class="footer-about">Pushing the boundaries of pizza since 2025. Our mission is to deliver taste experiences that defy conventional reality.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Menu</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Testimonials</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-links">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">AI Ethics</a></li>
+                    <li><a href="#">Quantum Rights</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Quantum Lane, Metaverse</p>
+                <p><i class="fas fa-phone-alt"></i> +1 (555) QNT-PZZA</p>
+                <p><i class="fas fa-envelope"></i> contact@nexapizza.xyz</p>
+                <p><i class="fas fa-clock"></i> Open 24/7/365.25</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom fade-in delay-1">
+            <p>&copy; 2025 NexaPizza. All rights reserved across all dimensions.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Header scroll effect
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            menuToggle.innerHTML = navLinks.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Product image gallery
+        const mainImage = document.querySelector('.main-product-image');
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                // Update main image
+                mainImage.src = thumb.src;
+                
+                // Update active thumbnail
+                thumbnails.forEach(t => t.classList.remove('active'));
+                thumb.classList.add('active');
+            });
+        });
+        
+        // 3D hover effect for main product image
+        mainImage.addEventListener('mousemove', (e) => {
+            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
+            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
+            mainImage.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+        });
+        
+        mainImage.addEventListener('mouseleave', () => {
+            mainImage.style.transform = 'rotateY(0deg) rotateX(0deg)';
+        });
+        
+        // Option buttons
+        const optionBtns = document.querySelectorAll('.option-btn');
+        
+        optionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const parent = btn.parentElement;
+                parent.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+        
+        // Quantity selector
+        const quantityInput = document.querySelector('.quantity-input');
+        const minusBtn = document.querySelector('.quantity-btn:first-child');
+        const plusBtn = document.querySelector('.quantity-btn:last-child');
+        
+        minusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value > 1) {
+                quantityInput.value = value - 1;
+            }
+        });
+        
+        plusBtn.addEventListener('click', () => {
+            let value = parseInt(quantityInput.value);
+            if (value < 10) {
+                quantityInput.value = value + 1;
+            }
+        });
+        
+        // Rating stars
+        const ratingStars = document.querySelectorAll('.rating-star');
+        
+        ratingStars.forEach((star, index) => {
+            star.addEventListener('click', () => {
+                ratingStars.forEach((s, i) => {
+                    if (i <= index) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+        });
+        
+        // Recommended slider
+        const recommendedSlider = document.querySelector('.recommended-slider');
+        const dots = document.querySelectorAll('.slider-dot');
+        let currentSlide = 0;
+        
+        function goToSlide(index) {
+            recommendedSlider.scrollTo({
+                left: recommendedSlider.children[index].offsetLeft,
+                behavior: 'smooth'
+            });
+            
+            // Update dots
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[index].classList.add('active');
+            
+            currentSlide = index;
+        }
+        
+        // Dot click events
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => goToSlide(index));
+        });
+        
+        // Auto slide
+        setInterval(() => {
+            currentSlide = (currentSlide + 1) % dots.length;
+            goToSlide(currentSlide);
+        }, 5000);
+        
+        // Add to cart animation
+        const addToCartBtn = document.querySelector('.add-to-cart-btn');
+        
+        addToCartBtn.addEventListener('click', function() {
+            // Create flying pizza icon
+            const pizzaIcon = document.createElement('i');
+            pizzaIcon.className = 'fas fa-pizza-slice';
+            pizzaIcon.style.position = 'fixed';
+            pizzaIcon.style.fontSize = '20px';
+            pizzaIcon.style.color = 'var(--primary)';
+            pizzaIcon.style.zIndex = '1000';
+            pizzaIcon.style.pointerEvents = 'none';
+            
+            // Get button position
+            const rect = this.getBoundingClientRect();
+            const startX = rect.left + rect.width / 2;
+            const startY = rect.top + rect.height / 2;
+            
+            // Get cart position
+            const cart = document.querySelector('.cart-icon');
+            const cartRect = cart.getBoundingClientRect();
+            const endX = cartRect.left + cartRect.width / 2;
+            const endY = cartRect.top + cartRect.height / 2;
+            
+            // Set initial position
+            pizzaIcon.style.left = `${startX}px`;
+            pizzaIcon.style.top = `${startY}px`;
+            document.body.appendChild(pizzaIcon);
+            
+            // Animate to cart
+            const duration = 800;
+            const startTime = performance.now();
+            
+            function animate(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Bezier curve for more natural motion
+                const bezierProgress = progress < 0.5 ? 
+                    2 * progress * progress : 
+                    1 - Math.pow(-2 * progress + 2, 2) / 2;
+                
+                // Current position
+                const currentX = startX + (endX - startX) * bezierProgress;
+                const currentY = startY + (endY - startY) * bezierProgress - (100 * Math.sin(progress * Math.PI));
+                
+                pizzaIcon.style.left = `${currentX}px`;
+                pizzaIcon.style.top = `${currentY}px`;
+                pizzaIcon.style.transform = `rotate(${progress * 720}deg) scale(${1 + 0.5 * Math.sin(progress * Math.PI)})`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    // Remove icon
+                    pizzaIcon.remove();
+                    
+                    // Update cart count with animation
+                    const cartCount = document.querySelector('.cart-count');
+                    cartCount.textContent = parseInt(cartCount.textContent) + parseInt(quantityInput.value);
+                    cartCount.style.transform = 'scale(1.5)';
+                    setTimeout(() => {
+                        cartCount.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+            
+            // Button click effect
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 200);
+        });
+        
+        // Wishlist button
+        const wishlistBtn = document.querySelector('.wishlist-btn');
+        
+        wishlistBtn.addEventListener('click', function() {
+            this.innerHTML = '<i class="fas fa-check"></i> Added to Wishlist';
+            this.style.backgroundColor = 'var(--primary)';
+            this.style.borderColor = 'var(--primary)';
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-heart"></i> Add to Wishlist';
+                this.style.backgroundColor = 'transparent';
+                this.style.borderColor = 'rgba(255, 255, 255, 0.2)';
+            }, 2000);
+        });
+        
+        // Intersection Observer for scroll animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+    </script>
+</body>
+</html>
